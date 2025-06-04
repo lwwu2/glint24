@@ -7,7 +7,7 @@ This repo contains the implementation of the SIGGRAPH 2025 paper: **Position-Nor
 
 - `convert_G.py` converts input normal map into GGX roughness and tangent frame for fast shadow-masking approximation.
 
-### [Paper] (https://arxiv.org/abs/2505.08985) | [Citation] (#citation)
+### [Paper](https://arxiv.org/abs/2505.08985) | [Citation](#citation)
 
 
 
