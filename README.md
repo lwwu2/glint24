@@ -42,7 +42,10 @@ Normal map to cluster and bounding box hierarchy:
 python convert.py --input <normal-or-height-map-file> --output <output-folder>
 ```
 
-An example is provided in `demo/` that reproduces Fig. 11 of the paper: first copy `src/bsdfs/` to Mitsuba 0.6 source code folder and recompile, then `cd demo` and run `sh demo.sh`; the rendering results will be saved as `scene1_isotropic.exr`, `scene1_brush.exr`, `scene1_scratched.exr`.
+An example is provided in `demo/` that reproduces Fig. 11 of the paper:
+1. Download [Mitsuba 0.6](https://github.com/mitsuba-renderer/mitsuba). Copy `src/bsdfs/` to the Mitsuba 0.6 folder and compile according to the [documentation](https://mitsuba-renderer.org/docs.html).
+2. In this folder, `cd demo` and run `sh demo.sh`.
+3. The rendering results will be saved as `scene1_isotropic.exr`, `scene1_brush.exr`, `scene1_scratched.exr`.
 
 
 
