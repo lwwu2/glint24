@@ -1,0 +1,130 @@
+<scene version="0.6.0">
+	
+    <integrator type="direct">
+		<integer name="emitterSamples" value="1"/>
+        <integer name="bsdfSamples" value="1"/>
+	</integrator>
+    
+	<sensor type="perspective" id="sensor" name="sensor">
+		<string name="fovAxis" value="smaller"/>
+		<float name="nearClip" value="0.001000"/>
+		<float name="farClip" value="100.000000"/>
+		<float name="fov" value="45"/>
+        
+		<transform name="toWorld">
+            <lookat origin="2 1.75 0" target="0 0.25 0" up="0 1 0"/>
+			<translate x="0.0" y="0" z="0.05"/>
+		</transform>
+		
+        <sampler type="independent" name="sampler">
+            <integer name="sampleCount" value="256"/>
+		</sampler>
+        
+		<film type="hdrfilm" name="film">
+			<integer name="width" value="800"/>
+			<integer name="height" value="800"/>
+            <rfilter type="box"/>
+			<string name="fileFormat" value="openexr"/>
+            <boolean name="banner" value="false"/>
+		</film>
+			
+	</sensor>
+
+<!-- Materials -->
+
+	<bsdf type="diffuse" id="white" name="white">
+        <rgb value="0.4549 0.4313 0.4177" name="reflectance"/>
+	</bsdf>
+
+<!-- Emitters -->
+    
+    <emitter type="envmap">
+		<string name="filename" value="studio.exr"/>        
+        <float name="scale" value="0.6"/>
+        <transform name="toWorld">
+            <rotate y="1" angle="150"/>
+        </transform>
+	</emitter>
+    
+    
+    <shape type="sphere">
+		<transform name="toWorld">
+			<translate x="-1.0" y="2" z="0.0"/>
+			<scale x="1" y="1" z="1"/>
+		</transform>
+		<float name="radius" value="0.025"/>
+
+		<emitter type="area">
+			<rgb name="radiance" value="400.000000 400.000000 400.000000"/>
+		</emitter>
+	</shape>
+
+    <shape type="sphere">
+		<transform name="toWorld">
+			<translate x="0.5" y="2" z="0.0"/>
+			<scale x="1" y="1" z="1"/>
+		</transform>
+		<float name="radius" value="0.025"/>
+
+		<emitter type="area">
+			<rgb name="radiance" value="400.000000 400.000000 400.000000"/>
+		</emitter>
+	</shape>
+    
+    <shape type="sphere">
+		<transform name="toWorld">
+			<translate x="-0.25" y="2" z="0.75"/>
+			<scale x="1" y="1" z="1"/>
+		</transform>
+		<float name="radius" value="0.025"/>
+
+		<emitter type="area">
+			<rgb name="radiance" value="400.000000 400.000000 400.000000"/>
+		</emitter>
+	</shape>
+    
+    <shape type="sphere">
+		<transform name="toWorld">
+			<translate x="-0.25" y="2" z="-0.75"/>
+			<scale x="1" y="1" z="1"/>
+		</transform>
+		<float name="radius" value="0.025"/>
+
+		<emitter type="area">
+			<rgb name="radiance" value="400.000000 400.000000 400.000000"/>
+		</emitter>
+	</shape>
+    
+<!-- Shapes -->
+    
+	<shape type="rectangle" id="floor" name="floor">
+		<transform name="toWorld">
+			<matrix value="5.000000 0.000000 0.000000 0.000000 
+                           0.000000 -0.000000 5.000000 0.150000 
+                           0.000000 -5.000000 -0.000000 0.000000 
+                           0.000000 0.000000 0.000000 1.000000"/>
+		</transform>
+		<ref id="white" name="bsdf"/>
+	</shape>
+    
+    <shape type="obj" id="shape0" name="shape0">
+		<string name="filename" value="surface.obj"/>
+        <transform name="toWorld">
+            <rotate y="1" angle="55"/>
+        </transform>
+        
+        <bsdf type="glintconductor">
+            <string name="micro_normal" value="./$n"/> <!--normal map name-->
+            <float name="sigma" value="600000.0"/>
+            <float name="thresh" value="$t"/> <!--0.0004 for scratch, 0.004 for other-->
+            
+            <boolean name="fix_sigma" value="false"/>
+            <float name="texture_scale" value="16.0"/>
+            <integer name="res" value="1024"/>
+            <string name="filter" value="gaussian"/>
+        </bsdf>
+        
+	</shape>
+
+
+</scene>

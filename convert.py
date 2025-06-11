@@ -248,3 +248,45 @@ if __name__ == '__main__':
     bounds.insert(0,torch.tensor([level]))
     bounds = torch.cat(bounds,0)
     bounds.numpy().astype('float32').tofile(f'{OUTPUT}/{filename}/bound')
+    
+    
+    # save unbiased bounding box hierarchy
+    print("build unbiased bounding box hierarchy")
+    sigma_max = 128
+    pad = (normal.shape[0]%1024 == 0)
+    normals = normal[...,:2].float().clone()
+    if pad:
+        normals = torch.cat([normals,normals[:,:1]],1)
+        normals = torch.cat([normals,normals[:1]],0)
+    
+    bound_triangles = torch.stack([
+        normals[:-1,:-1],normals[:-1,1:],normals[1:,:-1],
+        normals[1:,:-1],normals[:-1,1:],normals[1:,1:]
+    ],0).reshape(2,3,1024,1024,2).transpose(0,1)
+    
+    area = triangle_area(bound_triangles[0],bound_triangles[1],bound_triangles[2]).abs()
+    invalid = area <1e-6
+    
+    n0,n1,n2 = bound_triangles[:,invalid]
+    n0[...,0] = n1[...,0]
+    n0[...,1] = n1[...,1] + 0.0006204032394013997
+    n2[...,0] = -0.000537284965911771+n1[...,0]
+    n2[...,1] = -0.00031020161970069985+n1[...,1]
+    n1[...,0] = 0.000537284965911771+n1[...,0]
+    n1[...,1] = -0.00031020161970069985+n1[...,1]
+    bound_triangles[:,invalid] = torch.stack([n0,n1,n2],0)
+
+    
+    bound_min = bound_triangles.flatten(0,1).min(dim=0)[0]
+    bound_max = bound_triangles.flatten(0,1).max(dim=0)[0]
+
+    level = int(np.log2(sigma_max))+1
+    bounds = [torch.cat([bound_min,bound_max],-1).reshape(-1)]
+    for l in range(1,level+1):
+        bound_min = -NF.max_pool2d(-bound_min.permute(2,0,1)[None],2,2)[0].permute(1,2,0)
+        bound_max = NF.max_pool2d(bound_max.permute(2,0,1)[None],2,2)[0].permute(1,2,0)
+        bounds.append(torch.cat([bound_min,bound_max],-1).reshape(-1))
+
+    bounds.insert(0,torch.tensor([level]))
+    bounds = torch.cat(bounds,0)
+    bounds.numpy().astype('float32').tofile(f'{OUTPUT}/{filename}/bound2')

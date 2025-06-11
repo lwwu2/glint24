@@ -13,17 +13,17 @@ This repo contains the implementation of the SIGGRAPH 2025 paper: **Position-Nor
 
 ## Usage
 
-Example BSDF usage in Mitsuba 0.6's XML format:
+BSDF plugin in Mitsuba 0.6's XML format:
 
 `````` xml
 <bsdf type="glintconductor">
             <string name="micro_normal" value=$normalmap_folder/>
             <float name="sigma" value=$footprint_scale/>
-            <float name="thresh" value="0.0004"/> # cluster error threshold
-            <boolean name="fix_sigma" value="false"/> # use ray differential for footprint estimation
-            <float name="texture_scale" value="16.0"/> # scale of texture
-            <integer name="res" value="1024"/> # normal map resolution
-            <string name="filter" value="gaussian"/> # footpint kernel type (gaussian|disk|box)
+            <float name="thresh" value="0.0004"/> <!--cluster error threshold-->
+            <boolean name="fix_sigma" value="false"/> <!--use ray differential for footprint estimation-->
+            <float name="texture_scale" value="16.0"/> <!--scale of the texture-->
+            <integer name="res" value="1024"/> <!--normal map resolution-->
+            <string name="filter" value="gaussian"/> <!--footpint kernel type (gaussian|disk|box)-->
 </bsdf>
 
 <bsdf type="glintdiffuse">
@@ -41,6 +41,8 @@ Normal map to cluster and bounding box hierarchy:
 ```shell
 python convert.py --input <normal-or-height-map-file> --output <output-folder>
 ```
+
+An example is provided in `demo/` that reproduces Fig. 11 of the paper: first copy `src/bsdfs/` to Mitsuba 0.6 source code folder and recompile, then `cd demo` and run `sh demo.sh`; the rendering results will be saved as `scene1_isotropic.exr`, `scene1_brush.exr`, `scene1_scratched.exr`.
 
 
 
