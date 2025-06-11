@@ -9,7 +9,10 @@ This repo contains the implementation of the SIGGRAPH 2025 paper: **Position-Nor
 
 ### [Paper](https://arxiv.org/abs/2505.08985) | [Citation](#citation)
 
-
+## Setup
+- Mitsuba 0.6
+- Pytorch
+- CUDA 11.7
 
 ## Usage
 
