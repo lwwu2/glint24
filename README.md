@@ -11,8 +11,10 @@ This repo contains the implementation of the SIGGRAPH 2025 paper: **Position-Nor
 
 ## Setup
 - Mitsuba 0.6
-- Pytorch
 - CUDA 11.7
+- Python 3.8
+- pytorch 2.0.8
+- opencv-python 4.8.0.76
 
 ## Usage
 
@@ -46,9 +48,15 @@ python convert.py --input <normal-or-height-map-file> --output <output-folder>
 ```
 
 An example is provided in `demo/` that reproduces Fig. 11 of the paper:
-1. Download [Mitsuba 0.6](https://github.com/mitsuba-renderer/mitsuba). Copy `src/bsdfs/` to the Mitsuba 0.6 folder and compile according to the [documentation](https://mitsuba-renderer.org/docs.html).
-2. In this folder, `cd demo` and run `sh demo.sh`.
-3. The rendering results will be saved as `scene1_isotropic.exr`, `scene1_brush.exr`, `scene1_scratched.exr`.
+1. Download [Mitsuba 0.6](https://github.com/mitsuba-renderer/mitsuba).
+2. Copy `src/bsdfs/` to the Mitsuba 0.6 folder and add lines below to `src/bsdfs/SConscript`
+```python
+plugins += env.SharedLibrary('glintdiffuse', ['glintdiffuse.cpp'])
+plugins += env.SharedLibrary('glintconductor', ['glintconductor.cpp'])
+```
+3. Compile according to the [documentation](https://mitsuba-renderer.org/docs.html).
+4. In this folder, `cd demo` and run `sh demo.sh`.
+5. The rendering results will be saved as `scene1_isotropic.exr`, `scene1_brush.exr`, `scene1_scratched.exr`.
 
 
 
